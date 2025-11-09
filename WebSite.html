@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Complex Numbers – Intro &amp; Basics</title>
+    
+    <!-- 1) MathJax for rendering LaTeX formulas -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+      id="MathJax-script"
+      async
+    ></script>
+
+    <!-- 2) Simple inline CSS for sidebar + content layout -->
+    <style>
+      :root {
+        --accent-color: #d9534f;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        font-family: Arial, sans-serif;
+      }
+      /* Sidebar styling */
+      #sidebar {
+        width: 260px;
+        background-color: #f0f0f0;
+        padding: 20px;
+        box-sizing: border-box;
+        height: 100vh;
+        overflow-y: auto;
+        border-right: 1px solid #ccc;
+      }
+      #sidebar ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      #sidebar li {
+        margin-bottom: 8px;
+      }
+      #sidebar a {
+        text-decoration: none;
+        color: #333;
+      }
+      #sidebar a:hover {
+        text-decoration: underline;
+      }
+
+      /* Content area styling */
+      #content {
+        flex: 1;
+        padding: 30px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        max-height: 100vh;
+      }
+      section {
+        margin-bottom: 40px;
+      }
+      h2, h3, h4 {
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+        color: #444;
+      }
+      p {
+        line-height: 1.6;
+      }
+      pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+      .math-display {
+        background-color: #fafafa;
+        padding: 1em;
+        border-left: 3px solid #ccc;
+        margin: 1em 0;
+      }
+      .example {
+        background-color: #f9f9f9;
+        border-left: 3px solid var(--accent-color);
+        padding: 1em;
+        margin: 1em 0;
+      }
+      .example-title {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 0.5em;
+      }
+      .interactive {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 1em;
+        margin: 1em 0;
+      }
+      .interactive h4 {
+        margin-top: 0;
+      }
+      .result {
+        margin-top: 1em;
+        padding: 0.5em;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+      }
+      .problem {
+        border: 1px solid #ddd;
+        padding: 1em;
+        margin: 1em 0;
+        border-radius: 4px;
+      }
+      .solution {
+        margin-top: 1em;
+        background-color: #f5f5f5;
+        padding: 1em;
+        border-left: 3px solid #5bc0de;
+        display: none; /* hidden by default */
+      }
+      .solution-toggle {
+        margin-top: 0.5em;
+        background-color: #5bc0de;
+        border: none;
+        color: white;
+        padding: 0.4em 0.8em;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .solution-toggle:hover {
+        background-color: #31b0d5;
+      }
+      footer {
+        border-top: 1px solid #ccc;
+        padding-top: 1em;
+        margin-top: 2em;
+        color: #666;
+        font-size: 0.9em;
+      }
+      .note {
+        color: #888;
+      }
+      /* Back to top button */
+      .back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #5bc0de;
+        color: white;
+        padding: 0.6em;
+        border-radius: 50%;
+        text-align: center;
+        text-decoration: none;
+        display: none;
+      }
+      .back-to-top:hover {
+        background-color: #31b0d5;
+      }
+    </style>
+</head>
+
+<body>
+  <!-- ========== LEFT‐HAND SIDEBAR ========== -->
+  <nav id="sidebar">
+  <h2>Contents</h2>
+  <ul>
+    <!-- Topic 1 -->
+    <li>
+      <span>1. Introduction to Complex Numbers</span>
+      <ul>
+        <li><span>Definition</span></li>
+        <li><span>Real &amp; Imaginary Parts</span></li>
+        <li><span>Argand Diagram</span></li>
+      </ul>
+    </li>
+
+    <!-- Topic 2 -->
+    <li>
+      <span>2. Rectangular (a + j b) Form</span>
+      <ul>
+        <li><span>Addition / Subtraction</span></li>
+        <li><span>Multiplication</span></li>
+        <li><span>Division</span></li>
+      </ul>
+    </li>
+
+    <!-- Topic 3 -->
+    <li>
+      <span>3. Magnitude &amp; Argument (Polar)</span>
+      <ul>
+        <li><span>Modulus (\(\lvert z \rvert\))</span></li>
+        <li><span>Argument (\(\arg z\))</span></li>
+        <li><span>Polar Form</span></li>
+      </ul>
+    </li>
+
+    <!-- Topic 4 -->
+    <li>
+      <span>4. Complex Conjugate</span>
+    </li>
+
+    <!-- Topic 5 -->
+    <li>
+      <span>5. Finding Complex Roots</span>
+    </li>
+
+    <!-- Topic 6 -->
+    <li>
+      <span>6. Practice Problems</span>
+    </li>
+  </ul>
+
+<!-- ─── Arctan Calculator in Sidebar ─── -->
+    <div class="sidebar-calculator" 
+         style="margin-top: 2em; padding-top: 1em; border-top: 1px solid #ccc;">
+      <h4 style="margin-bottom: 0.5em;">Arctan Calculator</h4>
+      <label for="atanInput" style="font-size: 0.9em;">Enter x:</label><br>
+      <input
+        type="number"
+        id="atanInput"
+        placeholder="e.g. 0.5"
+        style="width: 100%; padding: 0.4em; margin-top: 0.2em; box-sizing: border-box;"
+      >
+      <button
+        onclick="computeArctan()"
+        style="margin-top: 0.6em; width: 100%; background: #5cb85c; color: white; 
+               border: none; padding: 0.5em; border-radius: 4px; cursor: pointer;"
+      >
+        Compute \(\tan^{-1}(x)\)
+      </button>
+      <div id="atanResult" style="margin-top: 0.8em; font-size: 0.9em; color: #333;"></div>
+    </div>
+    <!-- ─────────────────────────────────────── -->
+</nav>
+  <!-- ========== RIGHT‐HAND MAIN CONTENT ========== -->
+  <div id="content">
+    <!-- ==== TOP‐LEVEL HEADING ==== -->
+    <h1>Complex Numbers</h1>
+    <p>
+      This page covers six foundational topics:
+        <ul>
+        <li>Introduction</li>
+        <li>Rectangular Form</li>
+        <li>Magnitude &amp; Argument</li>
+        <li>Complex Conjugate</li>
+        <li>Finding Complex Roots</li>
+        <li>Practice Problems</li>
+        </ul>
+
+    </p>
+
+    <!-- ========= 1. Introduction to Complex Numbers ========= -->
+    <section id="introduction">
+      <h2>1. Introduction to Complex Numbers</h2>
+
+      <section id="definition">
+        <h3>1.1 Definition</h3>
+        <p>
+          A <strong>complex number</strong> is defined as
+          $$
+            z \;=\; a \;+\; j\,b,\quad
+            a,\,b \in \mathbb{R},\quad
+            j^2 \;=\; -1.
+          $$
+          Here:
+          <ul>
+            <li>\(\;a\;\) is called the <em>real part</em>.</li>
+            <li>\(\;b\;\) is called the <em>imaginary part</em>.</li>
+            <li>We write often \(\Re\{z\}\;=\;a\), \(\Im\{z\}\;=\;b\).</li>
+          </ul>
+        </p>
+      </section>
+
+      <section id="real-imag">
+        <h3>1.2 Real &amp; Imaginary Parts</h3>
+        <p>
+          For any \(z = a + j\,b\):
+          <ul>
+            <li>Real part: \(\displaystyle \Re\{z\} = a.\)</li>
+            <li>Imaginary part: \(\displaystyle \Im\{z\} = b.\)</li>
+          </ul>
+          Equivalently, we write
+          \[
+            z = a + j\,b \;=\; \Re\{z\} \;+\; j\,\Im\{z\}.
+          \]
+        </p>
+      </section>
+
+      <section id="argand">
+         <h3>1.3 Argand Diagram</h3>
+  <p>
+    We can identify each complex number \(z = a + j\,b\) with the point \((a,b)\) in the plane. That 2D‐plane is called the <em>Argand diagram</em> (or complex plane).
+    <br /><br />
+    <strong>Key geometric ideas:</strong>
+        <ul>
+          <li>Plot \(z = a + j\,b\) at coordinate \((a,b)\).</li>
+          <li>The horizontal axis is the real axis; the vertical axis is the imaginary axis.</li>
+          <li>Geometric operations (e.g.\ addition) become vector‐based. We will see more in Section 3.</li>
+        </ul>
+      </p>
+
+      <!-- ─── New Argand Diagram Figure ─── -->
+<figure class="argand-diagram" style="text-align:center; margin:2em 0;">
+  <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Arrowhead definition -->
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#333" stroke="#333" stroke-width="0.5"/>
+      </marker>
+    </defs>
+    
+    <!-- Grid lines -->
+    <g stroke="#eee" stroke-width="1">
+      <line x1="50" y1="0" x2="50" y2="300"/>
+      <line x1="100" y1="0" x2="100" y2="300"/>
+      <line x1="200" y1="0" x2="200" y2="300"/>
+      <line x1="250" y1="0" x2="250" y2="300"/>
+      <line x1="0" y1="50" x2="300" y2="50"/>
+      <line x1="0" y1="100" x2="300" y2="100"/>
+      <line x1="0" y1="200" x2="300" y2="200"/>
+      <line x1="0" y1="250" x2="300" y2="250"/>
+    </g>
+    
+    <!-- Axes with bolder arrows -->
+    <line x1="0" y1="150" x2="300" y2="150" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="150" y1="300" x2="150" y2="0" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Axis labels -->
+    <text x="270" y="140" font-size="14" fill="#333" font-weight="bold">Re</text>
+    <text x="160" y="20" font-size="14" fill="#333" font-weight="bold">Im</text>
+    
+    <!-- Vectors with improved styling -->
+    <line x1="150" y1="150" x2="200" y2="50" stroke="#e74c3c" stroke-width="3" 
+          stroke-linecap="round" marker-end="url(#arrow)"/>
+    <text x="200" y="50" dx="5" dy="-5" font-size="13" fill="#e74c3c" font-weight="bold">1 + j2</text>
+    
+    <line x1="150" y1="150" x2="50" y2="0" stroke="#3498db" stroke-width="3" 
+          stroke-linecap="round" marker-end="url(#arrow)"/>
+    <text x="80" y="0" dx="-5" dy="15" font-size="13" fill="#3498db" font-weight="bold" style="text-shadow: 1px 1px 2px white;">−2 + j3</text>
+    
+    <!-- Origin point -->
+    <circle cx="150" cy="150" r="3" fill="#333"/>
+    <text x="150" y="150" dx="5" dy="15" font-size="12" fill="#333">0</text>
+    
+    <!-- Scale markers with improved visibility -->
+    <g font-size="12" fill="#333" font-weight="bold" text-anchor="middle">
+      <!-- X-axis labels -->
+      <text x="200" y="165">1</text>
+      <text x="250" y="165">2</text>
+      <text x="100" y="165">-1</text>
+      <text x="50" y="165">-2</text>
+      
+      <!-- Y-axis labels -->
+      <text x="165" y="100">1</text>
+      <text x="165" y="50">2</text>
+      <text x="165" y="200">-1</text>
+      <text x="165" y="250">-2</text>
+    </g>
+  </svg>
+  <figcaption style="font-size:0.9em; color:#666; margin-top:0.5em;">
+    An Argand diagram showing the vectors \(1 + j2\) (in red) and \(-2 + j3\) (in blue).
+  </figcaption>
+</figure>
+      <!-- ─────────────────────────────────── -->
+    </section>
+      <p>
+        🎥 Watch a short introduction video on Complex Numbers: 
+        <a href="https://www.youtube.com/watch?v=SP-YJe7Vldo&pp=ygUQY29tcGxleCBudW1iZXJzIA%3D%3D" target="_blank">
+          https://www.youtube.com/watch?v=SP-YJe7Vldo
+        </a>
+      </p>
+    </section>
+
+    <!-- ========= 2. Rectangular (a + j b) Form ========= -->
+    <section id="rectangular">
+      <h2>2. Rectangular Form</h2>
+      <p>
+        When working in <em>rectangular form</em>, we keep complex numbers as \(a + j\,b\). Addition, subtraction, multiplication, and division are easiest in this form.
+      </p>
+
+      <section id="add-sub">
+        <h3>2.1 Addition / Subtraction</h3>
+        <p>
+          If 
+          \[
+            z_1 = a + j\,b 
+            \quad\text{and}\quad 
+            z_2 = c + j\,d, 
+          \]
+          then
+          \[
+            \begin{aligned}
+              z_1 + z_2 
+                &= (a + j\,b) + (c + j\,d)
+                = (a + c) \;+\; j\,(b + d), 
+              \\[6pt]
+              z_1 - z_2 
+                &= (a + j\,b) - (c + j\,d)
+                = (a - c) \;+\; j\,(b - d).
+            \end{aligned}
+          \]
+        </p>
+        <p><strong>Example:</strong>  
+          \[
+            (4 + 3j)\;-\;(2 - 6j)
+            \;=\; (4 - 2) \;+\; j\bigl(3 - (-6)\bigr)
+            \;=\; 2 \;+\; j\,9.
+          \]
+        </p>
+        <p>
+        🎥 Watch: 
+        <a href="https://www.khanacademy.org/math/algebra2/x2ec2f6f830c9fb89%3Acomplex/x2ec2f6f830c9fb89%3Acomplex-add-sub/v/adding-complex-numbers" target="_blank">
+            Adding Complex Numbers (Khan Academy)
+        </a>
+        </p>
+      </section>
+
+      <section id="multiplication">
+        <h3>2.2 Multiplication</h3>
+        <p>
+          Again let \(z_1 = a + j\,b\) and \(z_2 = c + j\,d\). Then
+          \[
+            z_1 \times z_2 
+            = (a + j\,b)\,(c + j\,d)
+            = (a\,c - b\,d) \;+\; j\,\bigl(a\,d + b\,c\bigr).
+          \]
+        </p>
+        <p><strong>Example:</strong>  
+          \[
+            (1 + 2j)\,(4 + 6j) 
+            = \bigl(1 \cdot 4 - 2 \cdot 6\bigr) 
+              + j\,\bigl(1 \cdot 6 + 2 \cdot 4\bigr)
+            = (4 - 12) + j\,(6 + 8)
+            = -8 + j\,14.
+          \]
+        </p>
+        <p>
+          <strong>Alternatively</strong>, if you already know the polar/phasor form of each factor, you can multiply magnitudes and add angles (see Section 3). But purely in rectangular form, just use the “\(ac - bd\)” (real part) and “\(ad + bc\)” (imaginary part) rule shown above.
+        </p>
+        <p>
+        🎥 Watch: 
+        <a href="https://www.khanacademy.org/math/engageny-precalc/precalc-1/precalc-1a-complex-review/v/multiplying-complex-numbers" target="_blank">
+            Multiplying Complex Numbers (Khan Academy)
+        </a>
+        </p>
+      </section>
+
+      <section id="division">
+        <h3>2.3 Division</h3>
+        <p>
+          To compute 
+          \(\displaystyle \frac{z_1}{z_2}\) with 
+          \(z_1 = a + j\,b\), 
+          \(z_2 = c + j\,d\), multiply numerator and denominator by the <em>conjugate</em> of \(z_2\):
+          \[
+            \begin{aligned}
+              \frac{a + j\,b}{\,c + j\,d\,}
+              &= \frac{(a + j\,b)\,(c - j\,d)}{(c + j\,d)\,(c - j\,d)}
+              = \frac{(a\,c + b\,d) \;+\; j\,(b\,c - a\,d)}{c^2 + d^2}.
+            \end{aligned}
+          \]
+        </p>
+        <p><strong>Example:</strong>  
+          \[
+            \frac{2 + 4j}{6 - 7j}
+            = \frac{(2 + 4j)\,(6 + 7j)}{(6 - 7j)\,(6 + 7j)}
+            = \frac{12 - 28 + j\,(24 - 14)}{36 + 49}
+            = \frac{-16 + j\,10}{85}
+            = \frac{-16}{85} + j\,\frac{2}{17}.
+          \]
+        </p>
+        <p>
+        🎥 Watch: 
+        <a href="https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf%3Acomplex/x9e81a4f98389efdf%3Acomplex-div/v/dividing-complex-numbers" target="_blank">
+            Dividing Complex Numbers (Khan Academy)
+        </a>
+        </p>
+      </section>
+    </section>
+
+    <!-- ========= 3. Magnitude & Argument (Polar Coordinates) ========= -->
+    <section id="polar">
+      <h2>3. Magnitude &amp; Argument (Polar Form)</h2>
+      <p>
+        In polar (or phasor) form, we express \(z = a + j\,b\) by its magnitude \(\lvert z \rvert\) and angle \(\theta = \arg(z)\). Converting back and forth will be covered below.
+      </p>
+
+      <section id="modulus">
+        <h3>3.1 Modulus (Magnitude)</h3>
+        <p>
+          If \(z = a + j\,b\), then the <em>modulus</em> (or absolute value) is
+          $$
+            \lvert z \rvert = \sqrt{\,a^2 + b^2\,}.
+          $$
+          Geometrically, this is the distance from the origin \((0,0)\) to the point \((a,b)\) in the Argand plane.
+        </p>
+        <p>
+        🎥 Watch: 
+        <a href="https://www.khanacademy.org/math/algebra-home/alg-complex-numbers/alg-absolute-value-and-angle-of-complex-numbers/v/basic-complex-analysis" target="_blank">
+            Absolute Value & Angle (Khan Academy)
+        </a>
+        </p>
+      </section>
+
+      <section id="argument">
+        <h3>3.2 Argument (Angle)</h3>
+        <p>
+          The <em>argument</em> \(\theta = \arg(z)\) is the angle (in radians or degrees) that the vector from the origin to \((a,b)\) makes with the positive real axis. Formally,
+          $$
+            \theta 
+            = \tan^{-1}\!\biggl(\frac{b}{a}\biggr),
+          $$
+          but you must pay attention to the correct quadrant depending on the signs of \(a\) and \(b\). For example:
+          <ul>
+            <li>If \(a > 0\), then \(\theta = \tan^{-1}(b/a)\) lies in \((-90^\circ, +90^\circ)\).</li>
+            <li>If \(a < 0\) and \(b \ge 0\), then \(\theta = \tan^{-1}(b/a) + 180^\circ.\)</li>
+            <li>If \(a < 0\) and \(b < 0\), then \(\theta = \tan^{-1}(b/a) - 180^\circ.\)</li>
+            <li>If \(a = 0\) and \(b > 0\), then \(\theta = +90^\circ.\) If \(a = 0\) and \(b < 0\), then \(\theta = -90^\circ.\)</li>
+          </ul>
+        </p>
+        <p>
+        🎥 Watch: 
+        <a href="https://www.khanacademy.org/math/algebra-home/alg-complex-numbers/alg-polar-form-of-complex-numbers/v/complex-polar-form-intuition" target="_blank">
+            Argument of a Complex Number (Khan Academy)
+        </a>
+        </p>
+
+      <section id="polar-form">
+        <h3>3.3 Polar Form</h3>
+        <p>
+          Once you know \(\lvert z \rvert\) and \(\theta = \arg(z)\), you can write:
+          $$
+            z = a + j\,b = \lvert z \rvert \bigl(\cos\theta + j\,\sin\theta\bigr).
+          $$
+          We often abbreviate this as the “phasor” or “angle” notation:
+          $$
+            z = \lvert z \rvert \;\angle \theta.
+          $$
+          Equivalently, by Euler’s formula,
+          $$
+            z \;=\; \lvert z \rvert \;e^{\,j\theta}, 
+            \quad\text{since }e^{j\theta} = \cos\theta + j\,\sin\theta. 
+          $$
+        </p>
+        <p><strong>Examples (Rectangular → Polar):</strong></p>
+        <ul>
+          <li>
+            \(4 + 4j\).  
+            <div class="math-display">
+              $$
+                \lvert 4 + 4j \rvert \;=\; \sqrt{4^2 + 4^2} \;=\; \sqrt{32} \;=\; 4\sqrt{2}, 
+                \quad
+                \theta = \tan^{-1}\!\bigl(\tfrac{4}{4}\bigr) = 45^\circ.
+              $$
+              Therefore, \(4 + 4j = 4\sqrt{2}\;\angle 45^\circ.\)
+            </div>
+          </li>
+          <li>
+            \(3 + 0j\).  
+            <div class="math-display">
+              $$
+                \lvert 3 \rvert = 3,\quad \theta = 0^\circ 
+                \;\Longrightarrow\; 
+                3 = 3 \;\angle 0^\circ.
+              $$
+            </div>
+          </li>
+          <li>
+            \(-2j\).  
+            <div class="math-display">
+              $$
+                \lvert -2j \rvert = 2,\quad \arg(-2j) = -90^\circ 
+                \;\Longrightarrow\; 
+                -2j = 2 \;\angle(-90^\circ).
+              $$
+            </div>
+          </li>
+          <li>
+            \(-12 + 3j\).  
+            <div class="math-display">
+              $$
+                \lvert -12 + 3j \rvert = \sqrt{(-12)^2 + 3^2} 
+                = \sqrt{144 + 9} = \sqrt{153}, 
+              $$ 
+              $$
+                \theta = \tan^{-1}\!\Bigl(\tfrac{3}{-12}\Bigr). 
+                \quad
+                \text{Since }a<0,b>0,\;\theta = 180^\circ - 14.036^\circ \approx 165.964^\circ. 
+              $$
+              Hence,
+              $$
+                -12 + 3j = \sqrt{153}\;\angle 165.96^\circ.
+              $$
+            </div>
+          </li>
+        </ul>
+        <p>
+        🎥 Watch: 
+        <a href="https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf%3Acomplex/x9e81a4f98389efdf%3Acomplex-polar/v/polar-form-complex-number" target="_blank">
+            Polar Form Explanation (Khan Academy)
+        </a>
+        </p>
+      </section>
+    </section>
+    <section id="polar-ops">
+    <h3>3.4 Multiplication and Division (Polar Form)</h3>
+    <p>
+        Multiplication and division of complex numbers become very simple in polar form.
+        Given two complex numbers:
+        $$
+        z_1 = r_1 \angle \theta_1, \quad z_2 = r_2 \angle \theta_2,
+        $$
+        then:
+    </p>
+    <ul>
+        <li><strong>Multiplication:</strong>
+        $$
+            z_1 \cdot z_2 = r_1 r_2 \;\angle\; (\theta_1 + \theta_2)
+        $$
+        </li>
+        <li><strong>Division:</strong>
+        $$
+            \frac{z_1}{z_2} = \frac{r_1}{r_2} \;\angle\; (\theta_1 - \theta_2)
+        $$
+        </li>
+    </ul>
+
+    <p><strong>Example:</strong></p>
+    <div class="math-display">
+        $$
+        z_1 = 2 \angle 30^\circ,\quad z_2 = 3 \angle 60^\circ
+        $$
+        <ul>
+        <li>
+            \( z_1 \cdot z_2 = 6 \;\angle\; 90^\circ \)
+        </li>
+        <li>
+            \( \dfrac{z_1}{z_2} = \dfrac{2}{3} \;\angle\; -30^\circ \)
+        </li>
+        </ul>
+    </div>
+
+    <p>
+        🎥 Watch: 
+        <a href="https://www.youtube.com/watch?v=VkdXztTFsvM" target="_blank">
+        Multiplying in Polar Form (Khan Academy)
+        </a>
+    </p>
+    </section>
+
+    <!-- ========= 4. Complex Conjugate ========= -->
+    <section id="conjugate">
+      <h2>4. Complex Conjugate</h2>
+      <p>
+        For a complex number \( z = a + j\,b \), its <strong>complex conjugate</strong> (denoted \( z^*\) or \(\overline{z}\)) is
+        $$
+          z^* \;=\; a - j\,b.
+        $$
+      </p>
+      <p>In polar form, if \(z = r\,e^{\,j\theta}\), then
+        $$
+          z^* = r\,e^{-\,j\theta}.
+        $$
+      </p>
+      <p><strong>Key properties of the conjugate</strong> (for any two complex numbers \(z_1\) and \(z_2\)):</p>
+      <ul>
+        <li>\(\;(z_1 + z_2)^* = z_1^* + z_2^*.\)</li>
+        <li>\(\;(z_1 z_2)^* = z_1^* \;z_2^*.\)</li>
+        <li>\(\;\bigl(\tfrac{z_1}{z_2}\bigr)^* = \tfrac{z_1^*}{z_2^*} \quad\) (assuming \(z_2 \neq 0\)).</li>
+        <li>\(\;z \cdot z^* = a^2 + b^2 = \lvert z \rvert^2.\)</li>
+      </ul>
+      <div class="example">
+        <span class="example-title">✎ Example</span>
+        <p>Let \(z = -1 + 2j\). Then:</p>
+        <div class="math-display">
+          $$
+            z = -1 + 2j 
+            \quad\Longrightarrow\quad 
+            z^* = -1 - 2j,
+          $$
+          $$
+            \lvert z \rvert^2 = (-1)^2 + (2)^2 = 1 + 4 = 5,
+            \quad 
+            z\,z^* = (-1 + 2j)(-1 - 2j) = 5.
+          $$
+        </div>
+      </div>
+      <p>
+        🎥 Watch: 
+        <a href="https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf%3Acomplex/x9e81a4f98389efdf%3Acomplex-div/v/complex-conjugates" target="_blank">
+            Complex Conjugates (Khan Academy)
+        </a>
+        </p>
+    </section>
+
+    <!-- ========= 5. Finding Complex Roots ========= -->
+    <section id="complex-roots">
+      <h2>5. Finding Complex Roots</h2>
+      <p>To find all \(n\)th roots of a complex number \( z = r\,e^{\,j\theta}\), we use:</p>
+      <div class="math-display">
+        $$
+          z^{1/n} = r^{1/n} \;e^{\,j\,\frac{\theta + 2\pi k}{n}}
+          \quad\text{for }k = 0,1,\dots,n-1.
+        $$
+      </div>
+      
+      <div class="example">
+        <span class="example-title">✎ Example</span>
+        <p>Find all cube roots of \(8j\):</p>
+        <div class="math-display">
+          $$
+            \begin{aligned}
+            8j &= 8\,e^{\,j\pi/2}, \\[6pt]
+            (8j)^{1/3} &= 2\,e^{\,j\;\frac{\pi/2 + 2\pi k}{3}}
+            \quad k = 0,1,2, \\[6pt]
+            &= 
+            \begin{cases}
+            2\,e^{\,j\,\frac{\pi}{6}}
+              = 2\bigl(\cos\tfrac{\pi}{6} + j\sin\tfrac{\pi}{6}\bigr)
+              = \sqrt{3} + j, \\[4pt]
+            2\,e^{\,j\,\frac{5\pi}{6}}
+              = 2\bigl(\cos\tfrac{5\pi}{6} + j\sin\tfrac{5\pi}{6}\bigr) 
+              = -\sqrt{3} + j, \\[4pt]
+            2\,e^{\,j\,\frac{3\pi}{2}}
+              = 2\bigl(\cos\tfrac{3\pi}{2} + j\sin\tfrac{3\pi}{2}\bigr) 
+              = -\,2j.
+            \end{cases}
+            \end{aligned}
+          $$
+        </div>
+      </div>
+      
+      <div class="interactive">
+        <h4>🔢 Complex Roots Calculator</h4>
+        <p>Find all <em>n</em>th roots of a complex number:</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label>Complex number (a + bi):</label><br>
+            <input type="text" id="rootInput" placeholder="e.g., 1 + i" style="width: 100%; padding: 0.4em;">
+          </div>
+          <div>
+            <label>Root (n):</label><br>
+            <input type="number" id="rootN" min="1" max="10" value="2" style="width: 100%; padding: 0.4em;">
+          </div>
+        </div>
+        <button onclick="calculateRoots()" style="margin-top: 0.8em; background: #5cb85c; color: white; border: none; padding: 0.5em 1em; border-radius: 4px; cursor: pointer;">
+          Calculate Roots
+        </button>
+        <div id="rootsResult" class="result"></div>
+      </div>
+      <p>
+        🎥 Watch: 
+        <a href="https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf%3Acomplex/x9e81a4f98389efdf%3Acomplex-mul-div-polar/v/exponential-form-to-find-complex-roots" target="_blank">
+            Finding Complex Roots (Khan Academy)
+        </a>
+        </p>
+    </section>
+
+    <!-- ========= 6. Practice Problems Section ========= -->
+    <section id="practice">
+      <h2>6. Practice Problems</h2>
+      <p>Test your understanding with these exercises. Solutions are hidden by default – try solving them first!</p>
+      
+      <!-- Problem 1 -->
+      <div class="problem">
+        <h3>Problem 1: Basic Operations</h3>
+        <p>Compute \((2 - 3j)(4 + 5j) + \dfrac{1}{j}\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(1)">Show Solution</button>
+        <div class="solution" id="solution1">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              (2 - 3j)(4 + 5j) &= 8 + 10j - 12j - 15\,j^2 \\[6pt]
+                               &= 8 - 2j + 15 = 23 - 2j, \\[6pt]
+              \frac{1}{j} &= \frac{1}{j} \cdot \frac{j}{j} 
+                          = \frac{j}{\,j^2\,} = -\,j, \\[6pt]
+              \text{Result} &= 23 - 2j - j = 23 - 3j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 2 -->
+      <div class="problem">
+        <h3>Problem 2: Polar Form</h3>
+        <p>Express \(1 - \sqrt{3}j\) in polar form and compute its cube.</p>
+        <button class="solution-toggle" onclick="toggleSolution(2)">Show Solution</button>
+        <div class="solution" id="solution2">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              r &= \sqrt{1^2 + (-\sqrt{3})^2} = 2, \\[6pt]
+              \theta &= \arctan\bigl(\tfrac{-\sqrt{3}}{1}\bigr) = -\,\tfrac{\pi}{3}, \\[6pt]
+              z &= 2\,e^{-\,j\pi/3}, \\[6pt]
+              z^3 &= 2^3 \,e^{-\,j\pi} = 8\,(\,-1 + 0\,j\,) = -8.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 3 -->
+      <div class="problem">
+        <h3>Problem 3: Roots of Unity</h3>
+        <p>Find all 4th roots of \(-16\) and plot them in the complex plane.</p>
+        <button class="solution-toggle" onclick="toggleSolution(3)">Show Solution</button>
+        <div class="solution" id="solution3">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              -16 &= 16\,e^{\,j\pi}, \\[6pt]
+              (-16)^{1/4} &= 2\,e^{\,j(\,\pi + 2\pi k\,)/4}
+              \quad k = 0,1,2,3, \\[6pt]
+              &= 
+              \begin{cases}
+              2\,e^{\,j\pi/4} = \sqrt{2}\,\bigl(1 + j\bigr), \\[4pt]
+              2\,e^{\,j3\pi/4} = \sqrt{2}\,\bigl(-1 + j\bigr), \\[4pt]
+              2\,e^{\,j5\pi/4} = \sqrt{2}\,\bigl(-1 - j\bigr), \\[4pt]
+              2\,e^{\,j7\pi/4} = \sqrt{2}\,\bigl(1 - j\bigr).
+              \end{cases}
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 4: New -->
+      <div class="problem">
+        <h3>Problem 4: Use the Conjugate</h3>
+        <p>Given \(z = -1 + 2j\), compute its complex conjugate \(z^*\) and verify that \(z \cdot z^* = |z|^2\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(4)">Show Solution</button>
+        <div class="solution" id="solution4">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= -1 + 2j, \\[6pt]
+              z^* &= -1 - 2j, \\[6pt]
+              |z|^2 &= (-1)^2 + (2)^2 = 1 + 4 = 5, \\[6pt]
+              z \cdot z^* &= (-1 + 2j)(-1 - 2j) 
+                            = (-1)(-1) - (2)(-2) + j\bigl[(-1)(-2) + 2(-1)\bigr] \\[4pt]
+                          &= (1 - (-4)) + j(2 - 2)
+                          = (1 + 4) + j(0) = 5 = |z|^2.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 5 -->
+      <div class="problem">
+        <h3>Problem 5: Convert to Polar &amp; Back</h3>
+        <p>Convert \(-3 - 3j\) to polar form, then express it back in rectangular form from your polar result.</p>
+        <button class="solution-toggle" onclick="toggleSolution(5)">Show Solution</button>
+        <div class="solution" id="solution5">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              -3 - 3j &: \quad r = \sqrt{(-3)^2 + (-3)^2} = \sqrt{18} = 3\sqrt{2}, \\[6pt]
+                      &\quad \theta = \tan^{-1}\!\Bigl(\frac{-3}{-3}\Bigr) = \tan^{-1}(1) = 45^\circ, \\
+                      &\quad \text{but both }a<0,\,b<0 \text{, so } \theta = 45^\circ - 180^\circ = -135^\circ. \\[6pt]
+              \text{Polar form:} &\quad 3\sqrt{2}\;\angle(-135^\circ). \\[6pt]
+              \text{Back to rectangular:} &\quad 3\sqrt{2}\bigl(\cos(-135^\circ) + j\sin(-135^\circ)\bigr) \\[4pt]
+                                         &= 3\sqrt{2}\bigl(-\tfrac{\sqrt{2}}{2} - j\,\tfrac{\sqrt{2}}{2}\bigr)
+                                         = -3 - 3j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 6 -->
+      <div class="problem">
+        <h3>Problem 6: Simplify in Phasor Form</h3>
+        <p>Simplify the following expression in phasor form:<br>
+           \(\displaystyle \frac{(3 + 4j)(1 - 2j)}{2 - j}\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(6)">Show Solution</button>
+        <div class="solution" id="solution6">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              (3 + 4j)(1 - 2j) &= (3 \cdot 1 - 4 \cdot (-2)) + j(3 \cdot (-2) + 4 \cdot 1)
+              = (3 + 8) + j(-6 + 4) = 11 - 2j, \\[6pt]
+              \frac{11 - 2j}{2 - j} 
+                &= \frac{(11 - 2j)(2 + j)}{(2 - j)(2 + j)}
+                = \frac{22 + 11j - 4j - 2\,j^2}{4 + 1} 
+                = \frac{22 + 7j + 2}{5} 
+                = \frac{24 + 7j}{5} 
+                = 4.8 + 1.4j.
+            \end{aligned}
+            $$
+
+            Converting \(4.8 + 1.4j\) to phasor:
+            $$
+              r = \sqrt{4.8^2 + 1.4^2} \approx \sqrt{23.04 + 1.96} = \sqrt{25} = 5, 
+            $$
+            $$
+              \theta = \tan^{-1}\!\Bigl(\frac{1.4}{4.8}\Bigr) \approx \tan^{-1}(0.2917) \approx 16.26^\circ.
+            $$
+            Thus the phasor form is 
+            $$5 \;\angle 16.26^\circ.$$
+          </div>
+        </div>
+      </div>
+      <!-- Problem 7 -->
+      <div class="problem">
+        <h3>Problem 7: Power of a Complex Number</h3>
+        <p>Compute \((1 + i)^5\) and express the result in standard form \(a + bi\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(7)">Show Solution</button>
+        <div class="solution" id="solution7">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              1 + j &= \sqrt{2}\,e^{\,j\pi/4}, \\[6pt]
+              (1 + j)^5 &= \bigl(\sqrt{2}\bigr)^5 \, e^{\,j\,5(\pi/4)} 
+                        = 2^{5/2} \, e^{\,j\,5\pi/4}. \\[6pt]
+              2^{5/2} &= 4\sqrt{2}, 
+              \quad 5\pi/4 = \pi + \pi/4, \\[6pt]
+              e^{\,j\,5\pi/4} &= \cos\bigl(\tfrac{5\pi}{4}\bigr) + j\sin\bigl(\tfrac{5\pi}{4}\bigr) 
+                              = \bigl(-\tfrac{\sqrt{2}}{2}\bigr) + j\bigl(-\tfrac{\sqrt{2}}{2}\bigr). \\[6pt]
+              \therefore\;(1 + j)^5 
+              &= 4\sqrt{2} \,\Bigl(-\tfrac{\sqrt{2}}{2} - j\,\tfrac{\sqrt{2}}{2}\Bigr) 
+              = 4\sqrt{2} \,\Bigl(-\tfrac{\sqrt{2}}{2}\Bigr) \;+\; j\,4\sqrt{2}\,\Bigl(-\tfrac{\sqrt{2}}{2}\Bigr) \\[6pt]
+              &= 4(-1) + j\,4(-1) = -4 - 4j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 8 -->
+      <div class="problem">
+        <h3>Problem 8: Conjugate of a Sum and Product</h3>
+        <p>Let \(z_1 = 2 - 3j\) and \(z_2 = -1 + 4j\). Verify that \((z_1 + z_2)^* = z_1^* + z_2^*\) and \((z_1 z_2)^* = z_1^*\,z_2^*\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(8)">Show Solution</button>
+        <div class="solution" id="solution8">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z_1 + z_2 &= (2 - 3j) + (-1 + 4j) = (2 - 1) + j(-3 + 4) = 1 + j, \\[6pt]
+              (z_1 + z_2)^* &= (1 + j)^* = 1 - j, \\[6pt]
+              z_1^* + z_2^* &= (2 + 3j) + (-1 - 4j) = (2 - 1) + j(3 - 4) = 1 - j. \\[12pt]
+              z_1 z_2 &= (2 - 3j)(-1 + 4j) 
+                       = 2(-1) + 2\cdot 4j - 3j(-1) - 3j\cdot 4j \\[6pt]
+                      &= -2 + 8j + 3j - 12\,j^2 
+                       = -2 + 11j + 12 = 10 + 11j, \\[6pt]
+              (z_1 z_2)^* &= (10 + 11j)^* = 10 - 11j, \\[6pt]
+              z_1^*\,z_2^* &= (2 + 3j)(-1 - 4j) 
+                           = 2(-1) + 2(-4j) + 3j(-1) + 3j(-4j) \\[6pt]
+                          &= -2 - 8j - 3j - 12\,j^2 
+                           = -2 - 11j + 12 = 10 - 11j.
+            \end{aligned}
+            $$
+            Both identities hold.
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 9 -->
+      <div class="problem">
+        <h3>Problem 9: Argument of a Complex Number</h3>
+        <p>Find the argument \(\arg(z)\) of \(z = -1 - j\) in the range \((-\pi, \pi]\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(9)">Show Solution</button>
+        <div class="solution" id="solution9">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= -1 - j, 
+              \quad a = -1,\; b = -1, \\[6pt]
+              r &= \sqrt{(-1)^2 + (-1)^2} = \sqrt{2}, \\[6pt]
+              \theta &= \tan^{-1}\!\Bigl(\frac{-1}{-1}\Bigr) = \tan^{-1}(1) = \frac{\pi}{4}, \\[6pt]
+              \text{But }a<0,\;b<0 \implies \theta = -\pi + \frac{\pi}{4} = -\frac{3\pi}{4}. \\[6pt]
+              \therefore\; \arg(-1 - j) &= -\frac{3\pi}{4}.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 10 -->
+      <div class="problem">
+        <h3>Problem 10: Division of Complex Numbers</h3>
+        <p>Compute \(\displaystyle \frac{5 - 2j}{1 + 3j}\) and express the answer in the form \(a + bj\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(10)">Show Solution</button>
+        <div class="solution" id="solution10">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              \frac{5 - 2j}{1 + 3j} 
+              &= \frac{(5 - 2j)(1 - 3j)}{(1 + 3j)(1 - 3j)} 
+               = \frac{5(1) - 5(3j) - 2j(1) + 2j(3j)}{1^2 + 3^2} \\[6pt]
+              &= \frac{5 - 15j - 2j + 6\,j^2}{1 + 9}
+               = \frac{5 - 17j + 6(-1)}{10} 
+               = \frac{-1 - 17j}{10} 
+               = -\frac{1}{10} - \frac{17}{10}j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 11 -->
+      <div class="problem">
+        <h3>Problem 11: Solving a Quadratic in \(z\)</h3>
+        <p>Solve the equation \(z^2 = -1 + \sqrt{3}\,j\) for all complex solutions \(z\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(11)">Show Solution</button>
+        <div class="solution" id="solution11">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              -1 + \sqrt{3}\,j 
+              &= 2\,e^{\,j\,\frac{2\pi}{3}}, 
+              \quad\text{(since }r = \sqrt{(-1)^2 + (\sqrt{3})^2} = 2,\; 
+              \theta = \tan^{-1}\!\tfrac{\sqrt{3}}{-1} = \frac{2\pi}{3}\text{)}, \\[6pt]
+              z^2 &= 2\,e^{\,j\,\frac{2\pi}{3}} 
+              \;\Longrightarrow\; z = \sqrt{2}\,e^{\,j\,\frac{1}{2}\,( \frac{2\pi}{3} + 2\pi k )}, 
+              \quad k = 0,1. \\[6pt]
+              \text{For }k=0: 
+              &\quad z = \sqrt{2}\,e^{\,j\,\frac{\pi}{3}} = \sqrt{2}\Bigl(\cos\frac{\pi}{3} + j\sin\frac{\pi}{3}\Bigr) 
+              = \sqrt{2}\Bigl(\tfrac{1}{2} + j\,\tfrac{\sqrt{3}}{2}\Bigr) 
+              = \frac{\sqrt{2}}{2} + j\,\frac{\sqrt{6}}{2}. \\[6pt]
+              \text{For }k=1: 
+              &\quad z = \sqrt{2}\,e^{\,j\,\frac{1}{2}\,(\frac{2\pi}{3} + 2\pi)} 
+                       = \sqrt{2}\,e^{\,j\,\frac{7\pi}{3}} 
+                       = \sqrt{2}\,e^{\,j\,( \frac{7\pi}{3} - 2\pi )} 
+                       = \sqrt{2}\,e^{\,j\,\frac{\pi}{3}} 
+                       \text{(same as }k=0\text{)}. \\[3pt]
+              \text{Actually, the distinct angles are } 
+              \frac{\pi}{3}, \; \frac{\pi}{3} + \pi = \frac{4\pi}{3}. \\[6pt]
+              \Rightarrow\; z &= 
+              \begin{cases}
+                \sqrt{2}\bigl(\cos\tfrac{\pi}{3} + j\sin\tfrac{\pi}{3}\bigr) 
+                = \frac{\sqrt{2}}{2} + j\,\frac{\sqrt{6}}{2}, \\[4pt]
+                \sqrt{2}\bigl(\cos\tfrac{4\pi}{3} + j\sin\tfrac{4\pi}{3}\bigr) 
+                = \sqrt{2}\Bigl(-\tfrac{1}{2} - j\,\tfrac{\sqrt{3}}{2}\Bigr) 
+                = -\frac{\sqrt{2}}{2} - j\,\frac{\sqrt{6}}{2}.
+              \end{cases}
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 12 -->
+      <div class="problem">
+        <h3>Problem 12: Euler’s Identity Check</h3>
+        <p>Show that \(e^{\,j\pi/4} = \cos\!\bigl(\tfrac{\pi}{4}\bigr) + j\sin\!\bigl(\tfrac{\pi}{4}\bigr)\) and compute its rectangular form.</p>
+        <button class="solution-toggle" onclick="toggleSolution(12)">Show Solution</button>
+        <div class="solution" id="solution12">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              e^{\,j\pi/4} &= \cos\!\Bigl(\tfrac{\pi}{4}\Bigr) + j\sin\!\Bigl(\tfrac{\pi}{4}\Bigr), 
+              \quad \text{(Euler’s formula)} \\[6pt]
+              \cos\!\Bigl(\tfrac{\pi}{4}\Bigr) &= \frac{\sqrt{2}}{2}, 
+              \quad \sin\!\Bigl(\tfrac{\pi}{4}\Bigr) = \frac{\sqrt{2}}{2}, \\[6pt]
+              \therefore\; e^{\,j\pi/4} &= \frac{\sqrt{2}}{2} + j\,\frac{\sqrt{2}}{2}.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 13 -->
+      <div class="problem">
+        <h3>Problem 13: Triangle Inequality Example</h3>
+        <p>Let \(z_1 = 3 + 4j\) and \(z_2 = -2 + j\). Verify numerically that \(\lvert z_1 + z_2\rvert \le \lvert z_1\rvert + \lvert z_2\rvert\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(13)">Show Solution</button>
+        <div class="solution" id="solution13">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z_1 + z_2 &= (3 + 4j) + (-2 + j) = (3 - 2) + j(4 + 1) = 1 + 5j, \\[6pt]
+              \lvert z_1 + z_2\rvert &= \sqrt{1^2 + 5^2} = \sqrt{26}, \\[6pt]
+              \lvert z_1\rvert &= \sqrt{3^2 + 4^2} = 5, 
+              \quad \lvert z_2\rvert = \sqrt{(-2)^2 + 1^2} = \sqrt{5}, \\[6pt]
+              \lvert z_1\rvert + \lvert z_2\rvert &= 5 + \sqrt{5}. 
+            \end{aligned}
+            $$
+            Numerically:
+            $$
+              \sqrt{26} \approx 5.099, 
+              \quad 5 + \sqrt{5} \approx 5 + 2.236 = 7.236.
+            $$
+            Hence 
+            $$
+              \lvert z_1 + z_2\rvert \approx 5.099 
+              \;\le\; 7.236 = \lvert z_1\rvert + \lvert z_2\rvert,
+            $$
+            verifying the triangle inequality.
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 14 -->
+      <div class="problem">
+        <h3>Problem 14: Inverse of a Complex Number</h3>
+        <p>Find the multiplicative inverse \(z^{-1}\) of \(z = 4 - 3j\) in the form \(a + bj\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(14)">Show Solution</button>
+        <div class="solution" id="solution14">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= 4 - 3j, \quad z^{-1} = \frac{1}{4 - 3j} 
+                  = \frac{4 + 3j}{(4 - 3j)(4 + 3j)} \\[6pt]
+                &= \frac{4 + 3j}{4^2 + 3^2} 
+                 = \frac{4 + 3j}{16 + 9} 
+                 = \frac{4 + 3j}{25} 
+                 = \frac{4}{25} + j\,\frac{3}{25}.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 15 -->
+      <div class="problem">
+        <h3>Problem 15: Fifth Roots of Unity</h3>
+        <p>List all the 5th roots of unity (solutions of \(z^5 = 1\)) and express them in trigonometric form.</p>
+        <button class="solution-toggle" onclick="toggleSolution(15)">Show Solution</button>
+        <div class="solution" id="solution15">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z^5 &= 1 = e^{\,j\,2\pi m}, \; m = 0,1,2,3,4 \\[6pt]
+              z_k &= e^{\,j\,\frac{2\pi k}{5}}, \quad k = 0,1,2,3,4. \\[6pt]
+              \text{Hence:}
+              \begin{cases}
+                z_0 = e^{\,j\,0} = 1, \\[4pt]
+                z_1 = e^{\,j\,\frac{2\pi}{5}} = \cos\!\Bigl(\tfrac{2\pi}{5}\Bigr) + j\sin\!\Bigl(\tfrac{2\pi}{5}\Bigr), \\[4pt]
+                z_2 = e^{\,j\,\frac{4\pi}{5}} = \cos\!\Bigl(\tfrac{4\pi}{5}\Bigr) + j\sin\!\Bigl(\tfrac{4\pi}{5}\Bigr), \\[4pt]
+                z_3 = e^{\,j\,\frac{6\pi}{5}} = \cos\!\Bigl(\tfrac{6\pi}{5}\Bigr) + j\sin\!\Bigl(\tfrac{6\pi}{5}\Bigr), \\[4pt]
+                z_4 = e^{\,j\,\frac{8\pi}{5}} = \cos\!\Bigl(\tfrac{8\pi}{5}\Bigr) + j\sin\!\Bigl(\tfrac{8\pi}{5}\Bigr).
+              \end{cases}
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 16 -->
+      <div class="problem">
+        <h3>Problem 16: Simplify a Quotient to a Real Number</h3>
+        <p>Simplify \(\displaystyle \frac{1 + j}{1 - j}\) and show that it is purely real.</p>
+        <button class="solution-toggle" onclick="toggleSolution(16)">Show Solution</button>
+        <div class="solution" id="solution16">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              \frac{1 + j}{1 - j} 
+              &= \frac{(1 + j)(1 + j)}{(1 - j)(1 + j)} 
+               = \frac{1 + 2j + j^2}{1 - j^2} 
+               = \frac{1 + 2j - 1}{1 - (-1)} \\[6pt]
+              &= \frac{2j}{2} = j.
+            \end{aligned}
+            $$
+            Oops—this indicates a purely imaginary answer.  But if we meant to find a real result, consider:
+            $$
+            \frac{1 - j}{1 + j} 
+            = \frac{(1 - j)(1 - j)}{(1 + j)(1 - j)} 
+            = \frac{1 - 2j + j^2}{1 - j^2} 
+            = \frac{1 - 2j - 1}{1 - (-1)} 
+            = \frac{-2j}{2} = -\,j.
+            $$
+            Both quotients are purely imaginary.  If instead we compute
+            $$
+            \frac{(1 + j)^2}{(1 - j)^2}
+            = \left(\frac{1 + j}{1 - j}\right)^2 
+            = j^2 = -1,
+            $$
+            which is purely real.
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 17 -->
+      <div class="problem">
+        <h3>Problem 17: Sum of Reciprocals</h3>
+        <p>Compute \(\displaystyle \frac{1}{2 + 3j} \;+\; \frac{1}{1 - 2j}\) and express the result in the form \(a + bj\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(17)">Show Solution</button>
+        <div class="solution" id="solution17">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              \frac{1}{2 + 3j} 
+              &= \frac{2 - 3j}{(2 + 3j)(2 - 3j)} 
+               = \frac{2 - 3j}{4 + 9} 
+               = \frac{2 - 3j}{13} 
+               = \frac{2}{13} - \frac{3}{13}j, \\[6pt]
+              \frac{1}{1 - 2j} 
+              &= \frac{1 + 2j}{(1 - 2j)(1 + 2j)} 
+               = \frac{1 + 2j}{1 + 4} 
+               = \frac{1 + 2j}{5} 
+               = \frac{1}{5} + \frac{2}{5}j. \\[6pt]
+              \text{Sum: } 
+              &= \Bigl(\tfrac{2}{13} - \tfrac{3}{13}j\Bigr) + \Bigl(\tfrac{1}{5} + \tfrac{2}{5}j\Bigr) 
+               = \Bigl(\tfrac{2}{13} + \tfrac{1}{5}\Bigr) + j\Bigl(-\tfrac{3}{13} + \tfrac{2}{5}\Bigr) \\[6pt]
+              &= \Bigl(\tfrac{10 + 13}{65}\Bigr) + j\Bigl(\tfrac{-15 + 26}{65}\Bigr) 
+               = \frac{23}{65} + j\,\frac{11}{65}.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 18 -->
+      <div class="problem">
+        <h3>Problem 18: Real Part of a Product</h3>
+        <p>Let \(z_1 = a + bj\) and \(z_2 = c + dj\). Show that \(\Re\{\,z_1\,\overline{z_2}\} = ac + bd\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(18)">Show Solution</button>
+        <div class="solution" id="solution18">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z_1\,\overline{z_2} 
+              &= (a + bj)(c - dj) 
+               = a\,c - a\,d\,j + b j\,c - b j\,d\,j \\[6pt]
+              &= a\,c - a\,d\,j + b\,c\,j - b\,d\,j^2 
+               = a\,c - a\,d\,j + b\,c\,j + b\,d \\[6pt]
+              &= (a\,c + b\,d) + j\,(b\,c - a\,d). \\[6pt]
+              \text{Therefore, } 
+              \Re\{\,z_1\,\overline{z_2}\} 
+              = a\,c + b\,d.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+      <!-- Problem 19 -->
+      <div class="problem">
+        <h3>Problem 19: Magnitude of a Product</h3>
+        <p>Compute \(\lvert (3 - 4j)\,(1 + j)\rvert\) using rectangular form and compare with \(\lvert 3 - 4j\rvert \,\lvert 1 + j\rvert\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(19)">Show Solution</button>
+        <div class="solution" id="solution19">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              (3 - 4j)(1 + j) 
+              &= 3(1) + 3j - 4j(1) - 4j^2 
+               = 3 + 3j - 4j + 4 
+               = 7 - j. \\[6pt]
+              \lvert 7 - j\rvert 
+              &= \sqrt{7^2 + (-1)^2} 
+               = \sqrt{49 + 1} = \sqrt{50} = 5\sqrt{2}. \\[6pt]
+              \lvert 3 - 4j\rvert &= \sqrt{3^2 + (-4)^2} = \sqrt{9 + 16} = 5, \\[6pt]
+              \lvert 1 + j\rvert &= \sqrt{1^2 + 1^2} = \sqrt{2}. \\[6pt]
+              \lvert 3 - 4j\rvert \,\lvert 1 + j\rvert 
+              &= 5 \times \sqrt{2} = 5\sqrt{2}, 
+              \quad \text{which matches } \lvert 7 - j\rvert.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 20 -->
+      <div class="problem">
+        <h3>Problem 20: Argument in Correct Quadrant</h3>
+        <p>Find \(\arg(z)\) for \(z = -\sqrt{3} + j\) in the range \((-\pi, \pi]\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(20)">Show Solution</button>
+        <div class="solution" id="solution20">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= -\sqrt{3} + j, 
+              \quad a = -\sqrt{3},\; b = 1. \\[6pt]
+              r &= \sqrt{(\!-\sqrt{3})^2 + 1^2} = \sqrt{3 + 1} = 2, \\[6pt]
+              \theta_0 &= \tan^{-1}\!\Bigl(\frac{b}{a}\Bigr) = \tan^{-1}\!\Bigl(\frac{1}{-\sqrt{3}}\Bigr) 
+                       = \tan^{-1}\!\bigl(-\tfrac{1}{\sqrt{3}}\bigr) = -\frac{\pi}{6}, \\[6pt]
+              \text{But }a<0,\,b>0 \implies \theta = \pi - \frac{\pi}{6} = \frac{5\pi}{6}. \\[6pt]
+              \therefore\;\arg\bigl(-\sqrt{3} + j\bigr) &= \frac{5\pi}{6}.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 21 -->
+      <div class="problem">
+        <h3>Problem 21: Sixth Roots of \(-1\)</h3>
+        <p>Find all solutions of \(z^6 = -1\) and express them in exponential form \(re^{j\theta}\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(21)">Show Solution</button>
+        <div class="solution" id="solution21">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              -1 &= e^{\,j\pi}, 
+              \quad z^6 = e^{\,j\pi} \;\Longrightarrow\; z = e^{\,j\,\frac{\pi + 2\pi k}{6}}, 
+              \quad k = 0,1,2,3,4,5. \\[6pt]
+              \text{Hence: } z_k 
+              &= e^{\,j\,\frac{\pi + 2\pi k}{6}} 
+              = e^{\,j\,\frac{(2k + 1)\pi}{6}}, 
+              \quad k = 0,1,2,3,4,5. \\[6pt]
+              \text{Explicitly: }
+              \begin{cases}
+                e^{\,j\,\frac{\pi}{6}}, \\[4pt]
+                e^{\,j\,\frac{3\pi}{6}} = e^{\,j\,\frac{\pi}{2}}, \\[4pt]
+                e^{\,j\,\frac{5\pi}{6}}, \\[4pt]
+                e^{\,j\,\frac{7\pi}{6}}, \\[4pt]
+                e^{\,j\,\frac{9\pi}{6}} = e^{\,j\,\frac{3\pi}{2}}, \\[4pt]
+                e^{\,j\,\frac{11\pi}{6}}.
+              \end{cases}
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 22 -->
+      <div class="problem">
+        <h3>Problem 22: Squared Magnitude Identity</h3>
+        <p>Show that for any complex \(z\), \(\lvert z\rvert^2 = z\,\overline{z}\), and apply it to \(z = 1 - 2j\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(22)">Show Solution</button>
+        <div class="solution" id="solution22">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= x + yj, 
+              \quad \overline{z} = x - yj, \\[6pt]
+              z\,\overline{z} &= (x + yj)(x - yj) 
+                = x^2 - x\,yj + x\,yj - y^2\,j^2 
+                = x^2 + y^2. \\[6pt]
+              \lvert z\rvert^2 &= x^2 + y^2 
+                \;=\; z\,\overline{z}. \\[12pt]
+              \text{For } z = 1 - 2j: 
+              x = 1,\; y = -2, \\[6pt]
+              z\,\overline{z} 
+              = (1 - 2j)(1 + 2j) 
+              = 1 + 2j - 2j - 4\,j^2 
+              = 1 + 4 = 5, \\[6pt]
+              \lvert 1 - 2j\rvert^2 &= 1^2 + (-2)^2 = 1 + 4 = 5.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 23 -->
+      <div class="problem">
+        <h3>Problem 23: Addition in Polar Form</h3>
+        <p>Evaluate \(z_1 + z_2\) if \(z_1 = 5\angle 30^\circ\) and \(z_2 = 3\angle 120^\circ\). Express the result in rectangular form \(a + bj\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(23)">Show Solution</button>
+        <div class="solution" id="solution23">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z_1 &= 5\Bigl(\cos 30^\circ + j\sin 30^\circ\Bigr) 
+                   = 5\Bigl(\tfrac{\sqrt{3}}{2} + j\,\tfrac{1}{2}\Bigr) 
+                   = \frac{5\sqrt{3}}{2} + j\,\frac{5}{2}, \\[6pt]
+              z_2 &= 3\Bigl(\cos 120^\circ + j\sin 120^\circ\Bigr) 
+                   = 3\Bigl(-\tfrac{1}{2} + j\,\tfrac{\sqrt{3}}{2}\Bigr) 
+                   = -\tfrac{3}{2} + j\,\tfrac{3\sqrt{3}}{2}. \\[6pt]
+              z_1 + z_2 
+              &= \Bigl(\frac{5\sqrt{3}}{2} - \frac{3}{2}\Bigr) 
+                 + j\Bigl(\frac{5}{2} + \frac{3\sqrt{3}}{2}\Bigr). \\[6pt]
+              &= \frac{5\sqrt{3} - 3}{2} \;+\; j\,\frac{5 + 3\sqrt{3}}{2}.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 24 -->
+      <div class="problem">
+        <h3>Problem 24: Solving a Cubic in \(z\)</h3>
+        <p>Solve \(z^3 = 8\) for all complex solutions \(z\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(24)">Show Solution</button>
+        <div class="solution" id="solution24">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              8 &= 8\,e^{\,j\,0}, 
+              \quad z^3 = 8\,e^{\,j\,0} 
+              \;\Longrightarrow\; z = 2\,e^{\,j\,\frac{2\pi k}{3}}, 
+              \quad k = 0,1,2. \\[6pt]
+              \text{Thus:}
+              \begin{cases}
+                z_0 = 2\,e^{\,j\,0} = 2, \\[4pt]
+                z_1 = 2\,e^{\,j\,\frac{2\pi}{3}} = 2\Bigl(-\tfrac{1}{2} + j\,\tfrac{\sqrt{3}}{2}\Bigr) = -1 + j\sqrt{3}, \\[4pt]
+                z_2 = 2\,e^{\,j\,\frac{4\pi}{3}} = 2\Bigl(-\tfrac{1}{2} - j\,\tfrac{\sqrt{3}}{2}\Bigr) = -1 - j\sqrt{3}.
+              \end{cases}
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 25 -->
+      <div class="problem">
+        <h3>Problem 25: Inverse and Verification</h3>
+        <p>Find the inverse \(z^{-1}\) of \(z = -2 + j\) and verify by checking \(z \cdot z^{-1} = 1\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(25)">Show Solution</button>
+        <div class="solution" id="solution25">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= -2 + j, 
+              \quad z^{-1} = \frac{1}{-2 + j} 
+                        = \frac{-2 - j}{(-2 + j)(-2 - j)} \\[6pt]
+              &= \frac{-2 - j}{4 + 1} = \frac{-2 - j}{5} = -\frac{2}{5} - \frac{1}{5}j. \\[6pt]
+              z \cdot z^{-1} 
+              &= (-2 + j)\Bigl(-\tfrac{2}{5} - \tfrac{1}{5}j\Bigr) 
+               = (-2)\Bigl(-\tfrac{2}{5}\Bigr) + (-2)\Bigl(-\tfrac{1}{5}j\Bigr) 
+                 + j\Bigl(-\tfrac{2}{5}\Bigr) + j\Bigl(-\tfrac{1}{5}j\Bigr) \\[6pt]
+              &= \frac{4}{5} + \frac{2}{5}j - \frac{2}{5}j - \frac{1}{5}j^2 
+               = \frac{4}{5} + 0 + \frac{1}{5} 
+               = 1.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 26 -->
+      <div class="problem">
+        <h3>Problem 26: Geometric Rotation</h3>
+        <p>Let \(z = 1 + j\). Compute \(w = j\,z\). Describe geometrically how \(w\) is obtained from \(z\) in the complex plane.</p>
+        <button class="solution-toggle" onclick="toggleSolution(26)">Show Solution</button>
+        <div class="solution" id="solution26">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= 1 + j, \\[6pt]
+              w &= j\,z = j(1 + j) = j + j^2 = j - 1 = -1 + j. \\[6pt]
+              \text{In the Argand plane, multiplying by }j 
+              \text{ rotates a point }90^\circ\text{ counterclockwise.} \\[4pt]
+              z = (1,1) \quad\longrightarrow\quad w = (-1,1).
+            \end{aligned}
+            $$
+            Thus, \(w\) is \(z\) rotated \(90^\circ\) CCW about the origin.
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 27 -->
+      <div class="problem">
+        <h3>Problem 27: Identify Real &amp; Imaginary Parts</h3>
+        <p>For \(z = -5 + 7j\), state \(\Re\{z\}\) and \(\Im\{z\}\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(27)">Show Solution</button>
+        <div class="solution" id="solution27">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= -5 + 7j, \\[6pt]
+              \Re\{z\} &= -5, 
+              \quad \Im\{z\} = 7.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 28 -->
+      <div class="problem">
+        <h3>Problem 28: Plot on Argand Diagram</h3>
+        <p>Plot \(z = 3 - 4j\) on the Argand plane. What are its coordinates?</p>
+        <button class="solution-toggle" onclick="toggleSolution(28)">Show Solution</button>
+        <div class="solution" id="solution28">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= 3 - 4j, \\[6pt]
+              \text{Coordinates on Argand plane: }(3,\,-4).
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 29 -->
+      <div class="problem">
+        <h3>Problem 29: Add Two Complex Numbers</h3>
+        <p>Compute \((2 + 3j) + (-1 + 5j)\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(29)">Show Solution</button>
+        <div class="solution" id="solution29">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              (2 + 3j) + (-1 + 5j) 
+              &= (2 + (-1)) + j(3 + 5) \\[6pt]
+              &= 1 + 8j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 30 -->
+      <div class="problem">
+        <h3>Problem 30: Subtract Two Complex Numbers</h3>
+        <p>Compute \((4 - 2j) - (1 + 3j)\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(30)">Show Solution</button>
+        <div class="solution" id="solution30">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              (4 - 2j) - (1 + 3j) 
+              &= (4 - 1) + j(-2 - 3) \\[6pt]
+              &= 3 - 5j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 31 -->
+      <div class="problem">
+        <h3>Problem 31: Multiply Two Complex Numbers</h3>
+        <p>Compute \((1 + 2j)\,(3 - j)\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(31)">Show Solution</button>
+        <div class="solution" id="solution31">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              (1 + 2j)\,(3 - j) 
+              &= 1\cdot 3 + 1\cdot(-j) + 2j\cdot 3 + 2j\cdot(-j) \\[6pt]
+              &= 3 - j + 6j - 2\,j^2 
+              = 3 + 5j - 2(-1) 
+              = 3 + 5j + 2 
+              = 5 + 5j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 32 -->
+      <div class="problem">
+        <h3>Problem 32: Divide Two Complex Numbers</h3>
+        <p>Compute \(\displaystyle \frac{5 + j}{2 - j}\) in rectangular form.</p>
+        <button class="solution-toggle" onclick="toggleSolution(32)">Show Solution</button>
+        <div class="solution" id="solution32">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              \frac{5 + j}{2 - j} 
+              &= \frac{(5 + j)\,(2 + j)}{(2 - j)\,(2 + j)} 
+               = \frac{10 + 5j + 2j + j^2}{4 + 1} \\[6pt]
+              &= \frac{10 + 7j - 1}{5} 
+               = \frac{9 + 7j}{5} 
+               = \frac{9}{5} + \frac{7}{5}j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 33 -->
+      <div class="problem">
+        <h3>Problem 33: Add and Multiply</h3>
+        <p>Given \(z_1 = 2 + j\) and \(z_2 = -3 + 4j\), compute \(z_1 + z_2\) and \(z_1\,z_2\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(33)">Show Solution</button>
+        <div class="solution" id="solution33">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z_1 + z_2 &= (2 + j) + (-3 + 4j) 
+                        = (2 - 3) + j(1 + 4) 
+                        = -1 + 5j, \\[6pt]
+              z_1\,z_2 &= (2 + j)\,(-3 + 4j) 
+                        = 2(-3) + 2\cdot 4j + j(-3) + j(4j) \\[6pt]
+                       &= -6 + 8j - 3j + 4\,j^2 
+                        = -6 + 5j + 4(-1) 
+                        = -6 + 5j - 4 
+                        = -10 + 5j.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 34 -->
+      <div class="problem">
+        <h3>Problem 34: Convert to Rectangular Form</h3>
+        <p>Express \(z = 6\,e^{j\pi}\) in rectangular form \(a + bj\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(34)">Show Solution</button>
+        <div class="solution" id="solution34">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= 6\,e^{j\pi} 
+                 = 6\bigl(\cos\pi + j\sin\pi\bigr) 
+                 = 6(-1 + j\cdot 0) 
+                 = -6 + 0\,j
+                 = -6.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 35 -->
+      <div class="problem">
+        <h3>Problem 35: Verify Zero Condition</h3>
+        <p>Find all \(z\) such that \(\Re\{z\} = 0\) and \(\Im\{z\} = 0\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(35)">Show Solution</button>
+        <div class="solution" id="solution35">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              \Re\{z\} = 0 \;\text{and}\; \Im\{z\} = 0 
+              \;\Longrightarrow\; z = 0 + 0\,j = 0.
+            \end{aligned}
+            $$
+            The only complex number with both real and imaginary parts zero is \(z = 0\).
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 36 -->
+      <div class="problem">
+        <h3>Problem 36: Basic Conjugate Practice</h3>
+        <p>Compute the conjugate of \(z = 4 - 7j\), then verify \(\Re\{z\} = \Re\{\,\overline{z}\}\) and \(\Im\{z\} = -\,\Im\{\,\overline{z}\}\).</p>
+        <button class="solution-toggle" onclick="toggleSolution(36)">Show Solution</button>
+        <div class="solution" id="solution36">
+          <p><strong>Solution:</strong></p>
+          <div class="math-display">
+            $$
+            \begin{aligned}
+              z &= 4 - 7j, 
+              \quad \overline{z} = 4 + 7j, \\[6pt]
+              \Re\{z\} &= 4, 
+              \quad \Re\{\,\overline{z}\} = 4, \\[6pt]
+              \Im\{z\} &= -7, 
+              \quad \Im\{\,\overline{z}\} = 7, 
+              \quad \text{so } \Im\{z\} = -\,\Im\{\,\overline{z}\}.
+            \end{aligned}
+            $$
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <footer>
+      <p>&copy; 2025 Complex Numbers Tutorial | Created for Educational Purposes</p>
+    </footer>
+  </div>
+
+  <!-- Back‐to‐top button -->
+  <a href="#" class="back-to-top" id="backToTop" title="Back to top">▲</a>
+
+  <script>
+    // ========== Toggle “Back to Top” Button Visibility ==========
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTop.style.display = 'block';
+      } else {
+        backToTop.style.display = 'none';
+      }
+    });
+    backToTop.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ========== Calculate n-th Roots of a Complex Number ==========
+    function calculateRoots() {
+      const input = document.getElementById('rootInput').value.trim();
+      const n = parseInt(document.getElementById('rootN').value);
+      const resultDiv = document.getElementById('rootsResult');
+      resultDiv.innerHTML = ''; // clear previous result
+
+      try {
+        // Parse complex number (simple parser for “a+bi”, “a-bi”, “i”, “-i”)
+        let a = 0, b = 0;
+        const normalized = input.replace(/\s+/g, '').toLowerCase();
+        if (normalized.includes('i')) {
+          // Attempt regex match: optional real part, optional imag part, then 'i'
+          const match = normalized.match(/^([+\-]?\d*\.?\d*)?([+\-]?\d*\.?\d*)?i$/);
+          if (match) {
+            // match[1] = real part string (possibly empty), match[2] = imag part string (possibly empty)
+            const realPart = match[1];
+            const imagPart = match[2];
+            if (realPart && realPart !== '+' && realPart !== '-') {
+              a = parseFloat(realPart);
+            }
+            if (imagPart && imagPart !== '+' && imagPart !== '-') {
+              b = parseFloat(imagPart);
+            } else if (imagPart === '' || imagPart === '+') {
+              b = 1;
+            } else if (imagPart === '-') {
+              b = -1;
+            }
+          } else {
+            // Fallback: split at last “+i” or “-i”
+            const splitIndex = Math.max(normalized.lastIndexOf('+i'), normalized.lastIndexOf('-i'));
+            if (splitIndex > 0) {
+              a = parseFloat(normalized.slice(0, splitIndex));
+              const imagString = normalized.slice(splitIndex, normalized.length - 1); // drop “i”
+              if (imagString === '+' || imagString === '') b = 1;
+              else if (imagString === '-') b = -1;
+              else b = parseFloat(imagString);
+            } else {
+              // Pure imaginary like “5i” or “-3i”
+              const onlyImag = normalized.replace('i', '');
+              if (onlyImag === '' || onlyImag === '+') b = 1;
+              else if (onlyImag === '-') b = -1;
+              else b = parseFloat(onlyImag);
+            }
+          }
+        } else {
+          // Pure real (no 'i')
+          a = parseFloat(normalized) || 0;
+          b = 0;
+        }
+
+        if (isNaN(a)) a = 0;
+        if (isNaN(b)) b = 0;
+
+        // Compute magnitude and angle
+        const r = Math.sqrt(a*a + b*b);
+        let theta = Math.atan2(b, a); // in radians
+
+        // Compute n-th roots
+        const rootR = Math.pow(r, 1/n);
+        const roots = [];
+        for (let k = 0; k < n; k++) {
+          const rootTheta = (theta + 2 * Math.PI * k) / n;
+          const realPart = rootR * Math.cos(rootTheta);
+          const imagPart = rootR * Math.sin(rootTheta);
+          roots.push({
+            real: realPart,
+            imag: imagPart,
+            theta: rootTheta
+          });
+        }
+
+        // Display results
+        let html = `<p><strong>${n}</strong>th roots of ${a.toFixed(3)} ${b >= 0 ? '+' : ''}${b.toFixed(3)}i:</p><ul>`;
+        roots.forEach((root, idx) => {
+          html += `
+            <li>
+              Root ${idx + 1}: 
+              ${root.real.toFixed(4)} ${root.imag >= 0 ? '+' : ''}${root.imag.toFixed(4)}i<br>
+              Polar form: ${rootR.toFixed(4)} e<sup>j${root.theta.toFixed(4)}</sup>
+            </li>
+          `;
+        });
+        html += '</ul>';
+        resultDiv.innerHTML = html;
+      } catch (err) {
+        resultDiv.innerHTML = `<p style="color: var(--accent-color)">Error calculating roots. Please check your input.</p>`;
+      }
+    }
+
+    // ========== Toggle Solution Display ==========
+    function toggleSolution(num) {
+      const sol = document.getElementById(`solution${num}`);
+      sol.style.display = sol.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // ========== Initialize Solutions as Hidden ==========
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.solution').forEach(el => {
+        el.style.display = 'none';
+      });
+    });
+  </script>
+    <script>
+    function computeArgument() {
+      const a = parseFloat(document.getElementById('argReal').value) || 0;
+      const b = parseFloat(document.getElementById('argImag').value) || 0;
+      const resultDiv = document.getElementById('argResult');
+
+      // Use Math.atan2(b, a) so the correct quadrant is handled automatically
+      const thetaRad = Math.atan2(b, a); 
+      const thetaDeg = thetaRad * (180 / Math.PI);
+
+      // Display with 4 decimal places
+      resultDiv.innerHTML = `
+        <p><strong>\(\theta\) in radians:</strong> ${thetaRad.toFixed(4)}</p>
+        <p><strong>\(\theta\) in degrees:</strong> ${thetaDeg.toFixed(2)}&deg;</p>
+      `;
+    }
+  </script>
+  <script>
+    function computeArctan() {
+  const x = parseFloat(document.getElementById('atanInput').value);
+  const resultDiv = document.getElementById('atanResult');
+
+  if (isNaN(x)) {
+    resultDiv.innerHTML = `<p style="color: #d9534f;">Please enter a valid number.</p>`;
+    return;
+  }
+
+  const thetaRad = Math.atan(x);
+  const thetaDeg = thetaRad * (180 / Math.PI);
+
+  resultDiv.innerHTML = `
+    <p>θ (rad) = ${thetaRad.toFixed(4)}</p>
+    <p>θ (deg) = ${thetaDeg.toFixed(2)}°</p>
+  `;
+}
+  </script>
+</body>
+</html>
